@@ -31,17 +31,21 @@ export default function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // backend API url
+  const API_URL =
+    process.env.NEXT_PUBLIC_API_URL || "https://skillbid-backend.onrender.com";
+
   useEffect(() => {
     async function loadProjects() {
       try {
-        const res = await fetch("http://127.0.0.1:5000/api/projects");
+        const res = await fetch(`${API_URL}/api/projects`);
         const data = await res.json();
 
         const formatted = await Promise.all(
           data.map(async (p) => {
             try {
               const recRes = await fetch(
-                `http://127.0.0.1:5000/api/recommend-freelancers/${p.id}`,
+                `${API_URL}/api/recommend-freelancers/${p.id}`,
               );
 
               const freelancers = await recRes.json();
